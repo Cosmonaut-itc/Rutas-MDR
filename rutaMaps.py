@@ -59,6 +59,7 @@ def filaDir():
 def apiMaps(arr,fila):
     if len(arr) != 0:
         tiempo_arr = []
+        despliegue_arr = []
         while(len(fila) != 0):
             for i in range (len(arr)):
                 url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&"
@@ -85,10 +86,12 @@ def apiMaps(arr,fila):
                 tiempo_index = tiempo_arr.index(tiempo_min)
                         
                 fila.append(arr[tiempo_index])
-                arr.pop(tiempo_index)
+                despliegue_arr.append(arr.pop(tiempo_index))
                 sg.popup(fila[0])
                 fila.pop(0)
-                tiempo_arr = []           
+                tiempo_arr = []   
+            else:
+                break        
     else:
         print("Nada mas se ingreso una direccion")       
              
