@@ -1,5 +1,9 @@
 import requests
 import PySimpleGUI as sg
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.keys import Keys
+
 
 #key de la API
 def getKey():
@@ -54,6 +58,20 @@ def filaDir():
     fila = []
     fila.append("ZonaOblatos, Calle Sebastian Allende 444, Col, Blanco y Cuéllar, 44730 Guadalajara, Jal.")
     return fila
+
+def retrieveMaps(arrDir):
+    browser = webdriver.Chrome(ChromeDriverManager().install())
+    browser.get('https://www.google.com.mx/maps/preview')
+    for i in range(len(arrDir)):
+        if i == 0:
+            browser.find_element_by_name("q").send_keys(arrDir[i])
+            browser.find_element_by_class_name('searchbox-directions-icon').click()
+            browser.find_element_by_class_name('widget-directions-icon reverse').click()
+        if i == 1:
+            browser.find_element_by_css_selector(["aria-haspopup=true"]).send_keys(arrDir[i])
+            browser.find_element_by_class_name('tactile-searchbox-input').send_keys(Keys.ENTER)
+
+    return 0
 
 #Se realiza el request de la API de google maps
 def apiMaps(arr,fila):
