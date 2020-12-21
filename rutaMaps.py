@@ -11,44 +11,25 @@ def getKey():
 
 
 #Se pide el input del numero de direcciones
-def arrDirecciones(numeroDirecciones):
-    
+def arrDirecciones():
     arr_dir = []
-    if(int(numeroDirecciones) == 1):
-        layout2 = [[sg.Text("Ingrese la dirección: ")],
-          [sg.Input(key='Direccion')],
-          [sg.Text(size=(100,1), key='-OUTPUT-')],
-          [sg.Button('Siguiente'), sg.Button('Salir')]]
-        win2 = sg.Window('Rutas MDR', layout2, margins=(400,300))
-        while True:
-            event2, value2 = win2.read()
-            if event2 == 'Salir' or sg.WINDOW_CLOSED:
-                break
-            if event2 == 'Siguiente':
-                win2['-OUTPUT-'].update('Solo se ingresó una dirección: ' + value2['Direccion'])
-        return arr_dir
-        win2.close()
-    #Se llenan con un  for el arreglo con las direcciones solicitadas si hay más de una dirección
-    else:
-        contador = 0
-        layout2 = [[sg.Text("Ingrese la dirección: ")],
-          [sg.Input(key='Direccion')],
-          [sg.Text(size=(100,1), key='-OUTPUT-')],
-          [sg.Button('Siguiente'), sg.Button('Salir')]]
-        win2 = sg.Window('Rutas MDR', layout2, margins=(300,300))
-        while True:
-            event2, value2 = win2.read()
-            if event2 == 'Salir' or sg.WINDOW_CLOSED:
-                break
-            if event2 == 'Siguiente':
-                arr_dir.append(value2['Direccion'])
-                win2['-OUTPUT-'].update('Dirección ingresada: ' + value2['Direccion'])
-                win2['Direccion'].update('')
-                contador = contador+1
-                if contador == int(numeroDirecciones):  
-                    return arr_dir
-                    
-        win2.close()
+    layout2 = [[sg.Text("Ingrese la dirección: ")],
+        [sg.Input(key='Direccion')],
+        [sg.Text(size=(100,1), key='-OUTPUT-')],
+        [sg.Button('Siguiente'), sg.Button('Salir'), sg.Button('Terminar')]]
+    win2 = sg.Window('Rutas MDR', layout2, margins=(300,300))
+    while True:
+        event2, value2 = win2.read()
+        if event2 == 'Salir' or sg.WINDOW_CLOSED:
+            win2.close()
+            return 0
+        if event2 == 'Siguiente':
+            arr_dir.append(value2['Direccion'])
+            win2['-OUTPUT-'].update('Solo se ingresó una dirección: ' + value2['Direccion'])
+            win2['Direccion'].update('')
+        if event2 == 'Terminar':
+            return arr_dir
+    
         
     
 def filaDir():        
@@ -94,10 +75,9 @@ def apiMaps(arr,fila):
         print("Nada mas se ingreso una direccion")       
              
             
-layout = [[sg.Text("Ingrese el número de direcciones: ")],
-          [sg.Input(key='-INPUT-')],
+layout = [[sg.Text("Bienvenido a Rutas La Mejicana ")],
           [sg.Text(size=(40,1), key='-OUTPUT-')],
-          [sg.Button('Siguiente'), sg.Button('Salir')]]
+          [sg.Button('Iniciar'), sg.Button('Salir')]]
 
 window = sg.Window('Rutas MDR', layout, margins=(500,300))
 
@@ -108,9 +88,9 @@ while True:
    
     if event1 == sg.WINDOW_CLOSED or event1 == 'Salir':
         break
-    elif event1 == 'Siguiente':
+    elif event1 == 'Iniciar':
         window.Hide()
-        apiMaps(arrDirecciones(values1['-INPUT-']),filaDir())
+        apiMaps(arrDirecciones(),filaDir())
         break
 
 # Finish up by removing from the screen
