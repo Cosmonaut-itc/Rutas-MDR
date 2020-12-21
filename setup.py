@@ -14,7 +14,7 @@ options = {
 setup(
     name = "Rutas la Mejicana",
     options = options,
-    version = "1.0.0",
+    version = "1.0.1",
     description = 'Calculo de rutas La Mejicana',
     executables = executables
 )
