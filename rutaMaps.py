@@ -1,5 +1,9 @@
 import requests
 import PySimpleGUI as sg
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.keys import Keys
+
 
 #key de la API
 def getKey():
@@ -37,10 +41,31 @@ def filaDir():
     fila.append("ZonaOblatos, Calle Sebastian Allende 444, Col, Blanco y Cuéllar, 44730 Guadalajara, Jal.")
     return fila
 
+def retrieveMaps(arrDir):
+    browser = webdriver.Chrome(ChromeDriverManager().install())
+    browser.get('https://www.google.com.mx/maps/preview')
+    for i in range(len(arrDir)):
+        if i == 0:
+            browser.find_element_by_name("q").send_keys(arrDir[i])
+            browser.find_element_by_class_name('searchbox-directions-icon').click()
+            browser.find_element_by_class_name('tactile-searchbox-input').send_keys(arrDir[i])
+        elif i == 1:
+            browser.find_element_by_css_selector("div[aria-label='Elige un punto de partida o haz clic en el mapa...']").send_keys("Molinos Don Ramon")
+            browser.find_element_by_class_name('tactile-searchbox-input').send_keys(Keys.ENTER)
+        elif i!= 1 and 0:
+            browser.find_element_by_class_name('widget-direction-icon waypoint-add').click()
+            browser.find_element_by_css_selector(["aria-haspopup=true"]).send_keys(arrDir[i])
+            browser.find_element_by_class_name('tactile-searchbox-input').send_keys(Keys.ENTER)
+        elif i == len(arrDir)-1 and len(arrDir)>2:
+            browser.find_element_by_class_name('blue-link section-directions-action-button').click()
+            browser.find_element_by_class_name('widget-pane-link').click()
+            break
+
 #Se realiza el request de la API de google maps
 def apiMaps(arr,fila):
     if len(arr) != 0:
         tiempo_arr = []
+        despliegue_arr = []
         while(len(fila) != 0):
             for i in range (len(arr)):
                 url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&"
@@ -58,8 +83,10 @@ def apiMaps(arr,fila):
                         tiempo_arr.append(int(tiempoNuevo))
                 else:
                     sg.popup(fila[0])
-                    fila.pop(0)
+                    despliegue_arr.append(fila.pop(0))
+                    despliegue_arr.append(arr[0])
                     sg.popup(arr[0])
+                    retrieveMaps(despliegue_arr)
                     return arr[0]
             
             if len(fila) == 1:
@@ -67,10 +94,12 @@ def apiMaps(arr,fila):
                 tiempo_index = tiempo_arr.index(tiempo_min)
                         
                 fila.append(arr[tiempo_index])
-                arr.pop(tiempo_index)
+                despliegue_arr.append(arr.pop(tiempo_index))
                 sg.popup(fila[0])
                 fila.pop(0)
-                tiempo_arr = []           
+                tiempo_arr = []   
+            else:
+                break 
     else:
         print("Nada mas se ingreso una direccion")       
              
