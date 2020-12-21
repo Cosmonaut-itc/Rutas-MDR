@@ -43,6 +43,7 @@ def arrDirecciones(numeroDirecciones):
             if event2 == 'Siguiente':
                 arr_dir.append(value2['Direccion'])
                 win2['-OUTPUT-'].update('Dirección ingresada: ' + value2['Direccion'])
+                win2['Direccion'].update('')
                 contador = contador+1
                 if contador == int(numeroDirecciones):  
                     return arr_dir
