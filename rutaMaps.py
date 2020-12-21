@@ -66,12 +66,18 @@ def retrieveMaps(arrDir):
         if i == 0:
             browser.find_element_by_name("q").send_keys(arrDir[i])
             browser.find_element_by_class_name('searchbox-directions-icon').click()
-            browser.find_element_by_class_name('widget-directions-icon reverse').click()
-        if i == 1:
+            browser.find_element_by_class_name('tactile-searchbox-input').send_keys(arrDir[i])
+        elif i == 1:
+            browser.find_element_by_css_selector("div[aria-label='Elige un punto de partida o haz clic en el mapa...']").send_keys("Molinos Don Ramon")
+            browser.find_element_by_class_name('tactile-searchbox-input').send_keys(Keys.ENTER)
+        elif i!= 1 and 0:
+            browser.find_element_by_class_name('widget-direction-icon waypoint-add').click()
             browser.find_element_by_css_selector(["aria-haspopup=true"]).send_keys(arrDir[i])
             browser.find_element_by_class_name('tactile-searchbox-input').send_keys(Keys.ENTER)
-
-    return 0
+        elif i == len(arrDir)-1 and len(arrDir)>2:
+            browser.find_element_by_class_name('blue-link section-directions-action-button').click()
+            browser.find_element_by_class_name('widget-pane-link').click()
+            break
 
 #Se realiza el request de la API de google maps
 def apiMaps(arr,fila):
@@ -95,8 +101,10 @@ def apiMaps(arr,fila):
                         tiempo_arr.append(int(tiempoNuevo))
                 else:
                     sg.popup(fila[0])
-                    fila.pop(0)
+                    despliegue_arr.append(fila.pop(0))
+                    despliegue_arr.append(arr[0])
                     sg.popup(arr[0])
+                    retrieveMaps(despliegue_arr)
                     return arr[0]
             
             if len(fila) == 1:
@@ -109,7 +117,7 @@ def apiMaps(arr,fila):
                 fila.pop(0)
                 tiempo_arr = []   
             else:
-                break        
+                break 
     else:
         print("Nada mas se ingreso una direccion")       
              
