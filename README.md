@@ -3,7 +3,7 @@ This project calculates the shorter routes to an adress using Google Maps, Dista
 
 ## Requirements
  ```
-  -Python 3.6>
+  -Python >3.6
   -PySimpleGUI
   -Requests
   -A google maps API key
