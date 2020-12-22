@@ -3,6 +3,7 @@ import PySimpleGUI as sg
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
+from time import sleep
 
 
 #key de la API
@@ -41,25 +42,42 @@ def filaDir():
     fila.append("ZonaOblatos, Calle Sebastian Allende 444, Col, Blanco y Cuéllar, 44730 Guadalajara, Jal.")
     return fila
 
+def buscarPrimero(browser, arrDir):
+    Place = browser.find_element_by_class_name("tactile-searchbox-input") 
+    Place.send_keys(arrDir) 
+    Submit = browser.find_element_by_xpath( 
+    "/html/body/jsl/div[3]/div[9]/div[3]/div[1]/div[1]/div[1]/div[2]/div[1]/button") 
+    Submit.click() 
+
+def busqueda(browser, arrDir):
+    sleep(6)
+    find = browser.find_element_by_xpath( 
+    "/html/body/jsl/div[3]/div[9]/div[3]/div[1]/div[2]/div/div[3]/div[1]/div[1]/div[2]/div/div/input") 
+    find.send_keys(arrDir) 
+    search = browser.find_element_by_xpath( 
+    "/html/body/jsl/div[3]/div[9]/div[3]/div[1]/div[2]/div/div[3]/div[1]/div[1]/div[2]/button[1]") 
+    search.click() 
+
 def retrieveMaps(arrDir):
     browser = webdriver.Chrome(ChromeDriverManager().install())
     browser.get('https://www.google.com.mx/maps/preview')
     for i in range(len(arrDir)):
         if i == 0:
-            browser.find_element_by_name("q").send_keys(arrDir[i])
-            browser.find_element_by_class_name('searchbox-directions-icon').click()
-            browser.find_element_by_class_name('tactile-searchbox-input').send_keys(arrDir[i])
+            buscarPrimero(browser,arrDir[i])
+            sleep(10)
+            directions = browser.find_element_by_xpath( 
+            "/html/body/jsl/div[3]/div[9]/div[7]/div/div[1]/div/div/div[5]/div[1]/div/button") 
+            directions.click() 
         elif i == 1:
-            browser.find_element_by_css_selector("div[aria-label='Elige un punto de partida o haz clic en el mapa...']").send_keys("Molinos Don Ramon")
-            browser.find_element_by_class_name('tactile-searchbox-input').send_keys(Keys.ENTER)
-        elif i!= 1 and 0:
-            browser.find_element_by_class_name('widget-direction-icon waypoint-add').click()
-            browser.find_element_by_css_selector(["aria-haspopup=true"]).send_keys(arrDir[i])
-            browser.find_element_by_class_name('tactile-searchbox-input').send_keys(Keys.ENTER)
-        elif i == len(arrDir)-1 and len(arrDir)>2:
-            browser.find_element_by_class_name('blue-link section-directions-action-button').click()
-            browser.find_element_by_class_name('widget-pane-link').click()
-            break
+            busqueda(browser, arrDir[i])
+        #elif i == len(arrDir)-1 and len(arrDir)>2:
+            #browser.find_element_by_class_name('blue-link section-directions-action-button').click()
+            #browser.find_element_by_class_name('widget-pane-link').click()
+            #break
+        else:
+            sleep(10)
+            #Plbrowser.find_element_by_class_name('searchbox add-waypoint-text').click()
+            busqueda(browser,arrDir[i])
 
 #Se realiza el request de la API de google maps
 def apiMaps(arr,fila):
@@ -118,7 +136,7 @@ while True:
     if event1 == sg.WINDOW_CLOSED or event1 == 'Salir':
         break
     elif event1 == 'Iniciar':
-        window.Hide()
+        window.close()
         apiMaps(arrDirecciones(),filaDir())
         break
 
