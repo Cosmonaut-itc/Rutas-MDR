@@ -8,10 +8,9 @@ from time import sleep
 
 #key de la API
 def getKey():
-    #api_file = open("C:/Users/felix/OneDrive/Escritorio/Felix/api-key.txt", "r")cañ
-    #api_key = api_file.read()
-    #api_file.close()
-    api_key = "AIzaSyAoNhOreZM8gnr2blfjb82xG7p1jmOFHEU"
+    api_file = open("api-key.txt", "r")
+    api_key = api_file.read()
+    api_file.close()
     return api_key
 
 
