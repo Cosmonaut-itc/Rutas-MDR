@@ -35,6 +35,7 @@ def escribeArchivo(arr):
     for i in range(len(arr)):
         archvioFinal.write(str(i+1) + " " + arr[i] + "\n")
     archvioFinal.close()
+    sg.popup("Proceso Termindado. Vea el archivo txt.")
 
 
 def filaDir():        
@@ -63,9 +64,7 @@ def apiMaps(arr,fila):
                     else:    
                         tiempo_arr.append(int(tiempoNuevo))
                 else:
-                    sg.popup(fila[0])
                     despliegue_arr.append(arr[0])
-                    sg.popup(arr[0])
                     escribeArchivo(despliegue_arr)
                     return arr[0]
             
@@ -75,7 +74,6 @@ def apiMaps(arr,fila):
                         
                 fila.append(arr[tiempo_index])
                 despliegue_arr.append(arr.pop(tiempo_index))
-                sg.popup(fila[0])
                 fila.pop(0)
                 tiempo_arr = []           
     else:
