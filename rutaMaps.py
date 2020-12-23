@@ -30,7 +30,13 @@ def arrDirecciones():
             return arr_dir
     
         
-    
+def escribeArchivo(arr):
+    archvioFinal = open('RutasMDR.txt', 'w')
+    for i in range(len(arr)):
+        archvioFinal.write(i + " " + arr[i])
+    archvioFinal.close()
+
+
 def filaDir():        
     fila = []
     fila.append("ZonaOblatos, Calle Sebastian Allende 444, Col, Blanco y Cuéllar, 44730 Guadalajara, Jal.")
@@ -67,7 +73,7 @@ def apiMaps(arr,fila):
                 tiempo_index = tiempo_arr.index(tiempo_min)
                         
                 fila.append(arr[tiempo_index])
-                arr.pop(tiempo_index)
+                despliegue_arr.append(arr.pop(tiempo_index))
                 sg.popup(fila[0])
                 fila.pop(0)
                 tiempo_arr = []           
