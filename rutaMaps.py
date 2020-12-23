@@ -39,6 +39,7 @@ def filaDir():
 #Se realiza el request de la API de google maps
 def apiMaps(arr,fila):
     if len(arr) != 0:
+        despliegue_arr = []
         tiempo_arr = []
         while(len(fila) != 0):
             for i in range (len(arr)):
