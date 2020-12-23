@@ -3,7 +3,7 @@ import PySimpleGUI as sg
 
 #key de la API
 def getKey():
-    api_file = open("api-key.txt", "r")
+    api_file = open("C://Users/felix/Desktop/api-key.txt", "r")
     api_key = api_file.read()
     api_file.close()
     return api_key
@@ -30,7 +30,13 @@ def arrDirecciones():
             return arr_dir
     
         
-    
+def escribeArchivo(arr):
+    archvioFinal = open('RutasMDR.txt', 'w')
+    for i in range(len(arr)):
+        archvioFinal.write(str(i+1) + " " + arr[i] + "\n")
+    archvioFinal.close()
+
+
 def filaDir():        
     fila = []
     fila.append("ZonaOblatos, Calle Sebastian Allende 444, Col, Blanco y Cuéllar, 44730 Guadalajara, Jal.")
@@ -39,6 +45,7 @@ def filaDir():
 #Se realiza el request de la API de google maps
 def apiMaps(arr,fila):
     if len(arr) != 0:
+        despliegue_arr = []
         tiempo_arr = []
         while(len(fila) != 0):
             for i in range (len(arr)):
@@ -57,8 +64,9 @@ def apiMaps(arr,fila):
                         tiempo_arr.append(int(tiempoNuevo))
                 else:
                     sg.popup(fila[0])
-                    fila.pop(0)
+                    despliegue_arr.append(arr[0])
                     sg.popup(arr[0])
+                    escribeArchivo(despliegue_arr)
                     return arr[0]
             
             if len(fila) == 1:
@@ -66,7 +74,7 @@ def apiMaps(arr,fila):
                 tiempo_index = tiempo_arr.index(tiempo_min)
                         
                 fila.append(arr[tiempo_index])
-                arr.pop(tiempo_index)
+                despliegue_arr.append(arr.pop(tiempo_index))
                 sg.popup(fila[0])
                 fila.pop(0)
                 tiempo_arr = []           
