@@ -33,7 +33,7 @@ def arrDirecciones():
 def escribeArchivo(arr):
     archvioFinal = open('RutasMDR.txt', 'w')
     for i in range(len(arr)):
-        archvioFinal.write(i + " " + arr[i])
+        archvioFinal.write(str(i+1) + " " + arr[i] + "\n")
     archvioFinal.close()
 
 
@@ -64,8 +64,9 @@ def apiMaps(arr,fila):
                         tiempo_arr.append(int(tiempoNuevo))
                 else:
                     sg.popup(fila[0])
-                    fila.pop(0)
+                    despliegue_arr.append(arr[0])
                     sg.popup(arr[0])
+                    escribeArchivo(despliegue_arr)
                     return arr[0]
             
             if len(fila) == 1:
