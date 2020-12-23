@@ -3,7 +3,7 @@ import PySimpleGUI as sg
 
 #key de la API
 def getKey():
-    api_file = open("api-key.txt", "r")
+    api_file = open("C://Users/felix/Desktop/api-key.txt", "r")
     api_key = api_file.read()
     api_file.close()
     return api_key
